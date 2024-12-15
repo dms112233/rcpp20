@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
 import java.util.*;
+import java.util.zip.CheckedOutputStream;
 
 import static org.bukkit.ChatColor.*;
 
@@ -111,25 +112,27 @@ public class pointCommand implements CommandExecutor, TabCompleter {
 
                         String commandSenderTeam = getTeamForPlayer(player);
 
-                        int CountInSideCommand = 0;
+//                        Team team = player.getScoreboard().getEntryTeam(player.getName());
 
-                        for (Map.Entry<String, Integer> entry : teamCounts.entrySet()) {
-                            String teamName = entry.getKey();
-                            int playerCount = entry.getValue();
-                            if (!teamName.equals(commandSenderTeam)) {
-                                CountInSideCommand += playerCount;
-                            }
-                        }
-
-                        int CountInPlayerTeam = 0;
-
-                        for (Map.Entry<String, Integer> entry : teamCounts.entrySet()) {
-                            String teamName = entry.getKey();
-                            int playerCount = entry.getValue();
-                            if (teamName.equals(commandSenderTeam)) {
-                                CountInPlayerTeam += playerCount;
-                            }
-                        }
+                        int CountInSideCommand = getPlayersCountInSideTeam(getTeamForPlayer(player));
+//
+//                        for (Map.Entry<String, Integer> entry : teamCounts.entrySet()) {
+//                            String teamName = entry.getKey();
+//                            int playerCount = entry.getValue();
+//                            if (!teamName.equals(commandSenderTeam)) {
+//                                CountInSideCommand += playerCount;
+//                            }
+//                        }
+//
+                        int CountInPlayerTeam = getPlayersCountInTeam(getTeamForPlayer(player));
+//
+//                        for (Map.Entry<String, Integer> entry : teamCounts.entrySet()) {
+//                            String teamName = entry.getKey();
+//                            int playerCount = entry.getValue();
+//                            if (teamName.equals(commandSenderTeam)) {
+//                                CountInPlayerTeam += playerCount;
+//                            }
+//                        }
 
 
 
@@ -276,6 +279,31 @@ public class pointCommand implements CommandExecutor, TabCompleter {
         }
         return true;
     }
+
+    private int getPlayersCountInTeam(String team)
+    {
+        int counter = 0;
+        List<Player> onlinePlayers_2 = new ArrayList<>(Bukkit.getOnlinePlayers());
+        for (Player player : onlinePlayers_2) {
+            if (team.equals(getTeamForPlayer(player))) {
+                counter += 1;
+            }
+        }
+        return counter;
+    }
+
+    private int getPlayersCountInSideTeam(String team)
+    {
+        int counter = 0;
+        List<Player> onlinePlayers_2 = new ArrayList<>(Bukkit.getOnlinePlayers());
+        for (Player player : onlinePlayers_2) {
+            if (!team.equals(getTeamForPlayer(player))) {
+                counter += 1;
+            }
+        }
+        return counter;
+    }
+
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (args.length == 1) {
