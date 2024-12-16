@@ -1,6 +1,7 @@
 package com.rim4oo.cpp.rcpp.commads;
 
 import com.google.common.collect.Lists;
+import com.rim4oo.cpp.rcpp.CaptureTimer;
 import com.rim4oo.cpp.rcpp.Rim4oosCapturePointsPlugin;
 import com.rim4oo.cpp.rcpp.itemSpawner;
 import org.bukkit.*;
@@ -10,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Team;
 import org.jetbrains.annotations.NotNull;
@@ -57,6 +59,8 @@ public class pointCommand implements CommandExecutor, TabCompleter {
             double yP = playerLocation.getY();
             double zP = playerLocation.getZ();
             List<String> allPoints = new ArrayList<>(Rim4oosCapturePointsPlugin.getData().getConfig().getKeys(false));
+            CaptureTimer captureTimer = new CaptureTimer();
+            captureTimer.startTimer(20);
             if (!allPoints.isEmpty()) {
                 String[] values;
                 for (String point : allPoints) {
